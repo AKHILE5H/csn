@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table PS3</title>
+  <style>
+    input {
+      margin: 5px;
+    }
+
+    button {
+      margin: 5px;
+    }
+
+    #table1,
+    #table2,
+    #result {
+      padding: 10px;
+    }
+
+    tr td {
+      padding: 5px;
+    }
+
+    .repeat-value {
+      background-color: yellow;
+    }
+  </style>
+</head>
+
+<body>
+  <form name="inputForm">
+    <input type="text" placeholder="Enter for first table" id="table1Input" name="table1Input">
+    <input type="text" placeholder="Enter for second table" id="table2Input" name="table2Input">
+    <br>
+    <button type="submit" id="generate">Submit</button>
+  </form>
+
+  <div id="table1"></div>
+  <div id="table2"></div>
+  <div id="result"></div>
+
+  <script>
+    function generateMatrix(d1, d2, val) {
+      var mat = [];
+      for (var i = 0; i < d1; i++) {
+        mat[i] = [];
+        for (var j = 0; j < d2; j++) {
+          mat[i][j] = (val + j) * (i + 1);
+        }
+      }
+      return mat;
+    }
+
+    function multiply(mat1, mat2) {
+      var mat = [];
+      for (var i = 0; i < mat1.length; i++) {
+        mat[i] = [];
+        for (var j = 0; j < mat1[0].length; j++) {
+          mat[i][j] = mat1[i][j] * mat2[i][j];
+        }
+      }
+      return mat;
+    }
+
+    function createTable(id, mat1) {
+      var output = '<table border="1px">';
+      for (var i = 0; i < mat1.length; i++) {
+        output += '<tr>';
+        for (var j = 0; j < mat1[0].length; j++) {
+          var cellValue = mat1[i][j];
+          var cssClass = '';
+          if (id === 'result') {
+            if (checkRepeatedValue(mat1, cellValue)) {
+              cssClass = 'repeat-value';
+            }
+          }
+          output += '<td class="' + cssClass + '">' + cellValue + '</td>';
+        }
+        output += '</tr>';
+      }
+      output += '</table>';
+      document.getElementById(id).innerHTML = output;
+    }
+
+    function checkRepeatedValue(mat, value) {
+      var count = 0;
+      for (var i = 0; i < mat.length; i++) {
+        for (var j = 0; j < mat[0].length; j++) {
+          if (mat[i][j] === value) {
+            count++;
+          }
+          if (count > 1) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    document.getElementById("generate").onclick = function () {
+
+      var input1 = document.getElementById("table1Input").value;
+      var input2 = document.getElementById("table2Input").value;
+
+      // Splitting the input values by '#' to get the numbers
+      var li1 = input1.split("#");
+      var li2 = input2.split("#");
+
+      var mat1 = generateMatrix(parseInt(li1[0]), parseInt(li1[1]), parseInt(li1[2]));
+      var mat2 = generateMatrix(parseInt(li2[0]), parseInt(li2[1]), parseInt(li2[2]));
+      var result = [];
+
+      if (mat1[0][0] === mat2[0][0]) {
+        result = mat2;
+      } else {
+        result = multiply(mat1, mat2);
+      }
+
+      createTable("table1", mat1);
+      createTable("table2", mat2);
+      createTable("result", result);
+
+      return false;
+    }
+  </script>
+</body>
+
+</html>

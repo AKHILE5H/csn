@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ajax Code</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+
+      form {
+        margin-bottom: 20px;
+      }
+
+      input[type="text"] {
+        padding: 5px;
+        margin-right: 10px;
+      }
+
+      #btn {
+        padding: 5px 10px;
+        background-color: #4c57af;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th,
+      td {
+        border: 1px solid #0d0d0d;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #ac1fac;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <form>
+      <input id="name" type="text" placeholder="Enter Name..." />
+      <input id="phone_no" type="text" placeholder="Enter phone no..." />
+      <input id="Div" type="text" placeholder="Enter E-mail..." />
+      <input type="button" id="btn" value="Submit" />
+    </form>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Username</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </body>
+  <script>
+    function FetchData() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "https://jsonplaceholder.typicode.com/users");
+      xhr.send();
+      xhr.onload = () => {
+        let response = xhr.responseText;
+        localStorage.setItem("users", response);
+      };
+      DisplayData();
+    }
+
+    function DisplayData() {
+      let tbody = document.getElementById("tbody");
+      let users = JSON.parse(localStorage.getItem("users"));
+      tbody.innerHTML = users
+        .map(
+          (element) => `
+        <tr>
+            <td>${element.name}</td>
+            <td>${element.username}</td>
+            <td>${element.email}</td>
+        </tr>
+    `
+        )
+        .join("");
+    }
+
+    FetchData();
+
+    document.getElementById("btn").addEventListener("click", () => {
+      let name = document.getElementById("name").value;
+      let username = document.getElementById("phone_no").value;
+      let email = document.getElementById("Div").value;
+
+      let postObj = {
+        name,
+        username,
+        email,
+      };
+
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST", "https://jsonplaceholder.typicode.com/users");
+      // xhr.setRequestHeader('Content-type','application/json','charset=UTF-8')
+      xhr.send(JSON.stringify(postObj));
+
+      xhr.onload = () => {
+        if (xhr.status == 201) {
+          let arr = JSON.parse(localStorage.getItem("users"));
+          arr.unshift(postObj);
+          localStorage.setItem("users", JSON.stringify(arr));
+        //   window.location.href = "data.html";
+          DisplayData();
+        }
+      };
+    });
+  </script>
+</html>
