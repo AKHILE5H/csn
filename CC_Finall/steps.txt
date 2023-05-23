@@ -36,3 +36,11 @@ ojb manageer->new custom obj->fields and relat->new->add fields
 To show obj you need custom tab->home->search tabs->select object
 
 history -c && history -w
+
+To start sudo
+1. su
+2. Enter pass
+3. apt install sudo
+4. usermod -aG sudo user-name
+5. exit (command exits root dir)
+6. reboot (command reboots the system)
