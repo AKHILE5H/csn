@@ -34,3 +34,5 @@ App manager->new lightning app->create app
 Lightning app builder->app page
 ojb manageer->new custom obj->fields and relat->new->add fields
 To show obj you need custom tab->home->search tabs->select object
+
+history -c && history -w
