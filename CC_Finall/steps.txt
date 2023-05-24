@@ -20,6 +20,8 @@ scp new.txt new2.txt vuser@10.10.2.4:
 ssh vuser@10.10.2.4 “ls”
 
 Angular:
+ng new myapp
+npm install -g @angular/cli@latest
 
 2 terminals: First cd into user app for both
 
